@@ -15,3 +15,5 @@ Source des données : Compte rendu journalier du Ministère de la défense ukrai
                      Estimation mort/blessé : https://fr.euronews.com/2023/02/17/pres-de-60-000-soldats-russes-morts-en-ukraine-depuis-le-debut-de-linvasion
 
 Le début de la guerre ayant été chaotique les données sur les deux premières semaines seront sûrement erronés.
+
+[DubuisVincent_WireFrame_VisualDonProject.pdf](https://github.com/VincentDubuis/VisualDon_Projet_VincentDubuis/files/10989657/DubuisVincent_WireFrame_VisualDonProject.pdf)
