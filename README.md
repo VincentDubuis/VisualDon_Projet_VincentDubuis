@@ -12,7 +12,7 @@ Description : Arrivé sur le site, une remise en contexte de l'avant-guerre pré
 
 Source des données : Compte rendu journalier du Ministère de la défense ukrainienne sur Twitter et Facebook à partir du 9 mars https://www.facebook.com/100069073844828/posts/271374005175059/?d=n (https://twitter.com/DefenceU / https://twitter.com/search?q=Total%20combat%20losses%20of%20the%20enemy%20(from%3ADefenceU)%20lang%3Aen%20until%3A2023-02-24%20since%3A2022-02-24&src=typed_query&f=top). Les données seront compilés.
 
-                     Estimation mort/blessé : https://fr.euronews.com/2023/02/17/pres-de-60-000-soldats-russes-morts-en-ukraine-depuis-le-debut-de-linvasion
+Estimation mort/blessé : https://fr.euronews.com/2023/02/17/pres-de-60-000-soldats-russes-morts-en-ukraine-depuis-le-debut-de-linvasion
 
 Le début de la guerre ayant été chaotique les données sur les deux premières semaines seront sûrement erronés.
 
