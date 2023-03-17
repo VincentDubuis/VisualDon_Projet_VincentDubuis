@@ -17,3 +17,5 @@ Estimation mort/blessé https://fr.euronews.com/2023/02/17/pres-de-60-000-soldat
 Le début de la guerre ayant été chaotique les données sur les deux premières semaines seront sûrement erronés.
 
 [DubuisVincent_WireFrame_VisualDonProject.pdf](https://github.com/VincentDubuis/VisualDon_Projet_VincentDubuis/files/10989657/DubuisVincent_WireFrame_VisualDonProject.pdf)
+
+Sources supplémentaire https://english.nv.ua/nation/at-least-180-000-russian-troops-injured-or-killed-in-war-against-ukraine-50299308.html
