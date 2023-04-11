@@ -8,62 +8,44 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <script src="js/index.js" async></script>
-
-    <title>1-SVG</title>
+    <title>Russian losts after one year of war</title>
 </head>
 
 <body>
-
-    <h1>Dessiner des formes</h1>
-    <h2>Rectangle</h2>
-    <svg width="400" height="100">
-          <rect width="400" height="100" fill="red" />
-        </svg>
-    <h2>Donut</h2>
-    <!--a svg positionned 100 px right 100px from the top-->
-    <svg id="donut" width="250" height="250">
-        <circle cx="80" cy="80" r="30" stroke="black" stroke-width="1" fill="none" />
-        <circle cx="80" cy="80" r="60" stroke="black" stroke-width="1" fill="none" />
-      </svg>
-    <h2>Ligne</h2>
-    <svg>
-      <line x1="20" y1="50" x2="30.44" y2="-9.10" stroke="black" />
-    </svg>
-    <h2>Path</h2>
-    <svg>
-      <!--Le chemin est défini-->
-      <path d="M 20 20 L 40 70 L 60 20" stroke="lightgrey" stroke-width="2" fill="none" id="theMotionPath"/>
-      <!-- Cercle rouge qui sera déplacé le long du chemin. -->
-      <circle r="5" fill="red">
-        <!-- Définit l'animation -->
-        <animateMotion dur="6s" repeatCount="indefinite">
-          <mpath xlink:href="#theMotionPath"/>
-        </animateMotion>
-      </circle>
-      <path d="M 20 20 L 40 70 L 60 20" stroke="black" stroke-width="1" fill="none" />
-      <path d="M 80 70 L 80 20" stroke="black" stroke-width="1" fill="none" />
-      <path d="M 100 70 L 100 20 L 120 70 L 120 20" stroke="black" stroke-width="1" fill="none" />
-      <path d="M 160 70 L 140 70 L 140 20 L 160 20" stroke="black" stroke-width="1" fill="none" />
-      <g>
-        <path d="M 200 70 L 180 70 L 180 20 L 200 20" stroke="black" stroke-width="1" fill="none" />
-        <path d="M 180 45 L 195 45" stroke="black" stroke-width="1" fill="none" />
-      </g>
-      <path d="M 220 70 L 220 20 L 240 70 L 240 20" stroke="black" stroke-width="1" fill="none" />
-      <g>
-        <path d="M 270 70 L 270 20" stroke="black" stroke-width="1" fill="none" />
-        <path d="M 255 20 L 285 20" stroke="black" stroke-width="1" fill="none" />
-      </g>
-    </svg>
-    <h1>Animer des formes</h1>
-
-    <h2>On click</h2>
-
-    <h2>On hover</h2>
-
-    <h2>Prenez la première lettre de votre prénom que vous avez créée ci-dessus. Faite bouger une forme de votre choix le long de la lettre</h2>
-
-    <!-- Dessine le chemin en gris, avec 2 cercles aux extrémités -->
-
+    <!--une section d'id introText et de classe visual
+    <section id="dateIntroduction" class="intro-text">
+        <h1>24 février 2022</h1>
+    </section>
+    <section id="textIntroduction" class="intro-text" hidden>
+        <h1>Après plusieurs mois à masser ces troupes autour de l'Ukraine et après avoir fait entrée son armée dans les régions séparatiste, la Russie lance ses troupes pour une prise éclaire de l'Ukraine.</h1>
+    </section>-->
+    <section id="dateIntroduction" class="intro-text">
+        <h1>24 février 2022</h1>
+    </section>
+    <section id="textIntroduction1" class="intro-text hidden">
+        <h1>Après plusieurs mois à masser ces troupes autour de l'Ukraine et après avoir fait entrée son armée dans les régions séparatiste, la Russie lance ses troupes pour une prise éclaire de l'Ukraine.</h1>
+    </section>
+    <section id="textIntroduction2" class="intro-text hidden">
+        <h1>Les forces ukrainiennes reculent sur tout le front, mais résiste dans la région de Kiev mettant fin à la tentative d'une guerre éclaire.</h1>
+    </section>
+    <section id="textIntroduction3" class="intro-text hidden">
+        <h1>La Russie prend Kherson, Melitpol et Marioupol au sud et après des mois de résistance, elle se retire du nord du pays.</h1>
+    </section>
+    <section id="textIntroduction3" class="intro-text hidden">
+        <h1>La situtation reste tendu à l'est où la guerre et au porte de la deuxième plus grande ville du pays, Kharkiv.</h1>
+    </section>
+    <section id="textIntroduction3" class="intro-text hidden">
+        <h1>Après deux contre-offensive, les Ukrainiens repousse les Russes de la région de Kharkiv et de la ville de Kherson.</h1>
+    </section>
+    <section id="textIntroduction3" class="intro-text hidden">
+        <h1>Après des mois de guerre, l'hiver est de retour et fige le front.</h1>
+    </section>
+    <section id="textIntroduction3" class="intro-text hidden">
+        <h1>Les forces sont alors concentrés à Bakhmut, où les Russes cherche une victoire pour atteindre la ville de Kramatorsk, dernière grande ville de la région de Donetsk.</h1>
+    </section>
+    <section id="textIntroduction3" class="intro-text hidden">
+        <h1>Aujourd'hui, malgré de lourdes pertes, la Russie ne contrôle toujours pas entièrement Bakhmut</h1>
+    </section>
 
 </body>
 

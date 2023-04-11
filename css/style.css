@@ -1,3 +1,36 @@
 body {
-      font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    color: #ffffff;
+    background-color: black;
+}
+
+.visual {
+    background-color: #000000;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+.intro-text {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20%;
+}
+
+.intro-text.hidden {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
