@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background-color: #000;
 }
 
 header {
@@ -18,13 +19,23 @@ header {
 #slider {
     width: 100%;
     height: 300px;
-    background-color: #e0e0e0;
+    background-color: #000000;
     grid-column: 1 / 3;
     grid-row: 1 / 2;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* Ajoutez votre code pour le slider ici */
+    position: relative;
+}
+
+#slider label {
+    position: absolute;
+    top: 25%;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+    color: white;
 }
 
 #slider input {
@@ -32,16 +43,32 @@ header {
     height: 100%;
     opacity: 1;
     position: absolute;
+    bottom: 50%;
+    transform: translateY(50%);
     z-index: 1;
     cursor: pointer;
+}
+
+
+/* pour le bouton*/
+
+#slider input[type="button"] {
+    position: absolute;
+    bottom: 25%;
+    text-align: center;
+    z-index: 3;
+    width: 4vw;
+    height: 2vw;
 }
 
 #left {
     width: 100%;
     padding: 20px;
+    margin: 30px;
     grid-column: 1 / 2;
     grid-row: 2 / 3;
     position: relative;
+    color: #ddd;
 }
 
 .intro-text {
@@ -79,8 +106,8 @@ header {
 }
 
 img {
-    width: 100px;
-    height: 100px;
+    width: 20vw;
+    height: auto;
     object-fit: cover;
     margin: 10px;
 }

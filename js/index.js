@@ -31,6 +31,7 @@ slider.addEventListener("input", function() {
     });
 });*/
 
+
 document.addEventListener('DOMContentLoaded', function() {
     const rangeInput = document.getElementById('rangeInput');
 
@@ -42,14 +43,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+
+
+});
+
+document.addEventListener('DOMContentLoaded', function() {
     const rangeInput = document.getElementById('rangeInput');
     const introTexts = document.querySelectorAll('.intro-text');
 
     function showAppropriateSection(value) {
         // Définissez les plages pour les sections ici
         const ranges = [
-            { min: 1, max: 30 },
-            { min: 31, max: 42 },
+            { min: 1, max: 20 },
+            { min: 21, max: 42 },
             { min: 43, max: 54 },
             { min: 55, max: 66 },
             { min: 67, max: 99 },
@@ -74,8 +80,51 @@ document.addEventListener('DOMContentLoaded', function() {
     rangeInput.addEventListener('input', function() {
         const inputValue = parseInt(this.value);
         showAppropriateSection(inputValue);
+        //Change le texte du label ayant l'id dateLabel en fonction de la valeur du rangeInput pour afficher une date
+        document.getElementById('dateLabel').innerHTML = getDateFromDayNumber(inputValue);
     });
 
     // Affichez la section appropriée au chargement de la page
     showAppropriateSection(parseInt(rangeInput.value));
+
+    let isPlaying = false;
+    let interval;
+    const playButton = document.querySelector("#playButton");
+
+    function togglePlay() {
+
+        if (isPlaying) {
+            console.log("Paused");
+            clearInterval(interval);
+            playButton.value = "Play";
+        } else {
+            interval = setInterval(function() {
+                // Code à exécuter pendant la lecture
+                rangeInput.value = parseInt(rangeInput.value) + 1;
+                const event = new Event("input");
+                rangeInput.dispatchEvent(event);
+                if (rangeInput.value >= 365) {
+                    clearInterval(interval);
+                    playButton.value = "Play";
+                }
+            }, 500);
+            console.log("Playing");
+            playButton.value = "Pause";
+        }
+        isPlaying = !isPlaying;
+    }
+    playButton.addEventListener("click", togglePlay);
 });
+
+
+function getDateFromDayNumber(dayNumber) {
+    const startDate = new Date(2022, 1, 24); // 24 février 2022
+    startDate.setDate(startDate.getDate() + dayNumber - 1);
+
+    const day = startDate.getDate().toString().padStart(2, '0');
+    const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = startDate.getFullYear();
+
+    const newDate = `${day}/${month}/${year}`
+    return newDate;
+}
