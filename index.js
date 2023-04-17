@@ -1,31 +1,29 @@
 import * as d3 from 'd3';
 import { getDataCSV } from './js/data.js';
+import { rangeInputSet } from './js/slider.js';
+import { displayText } from './js/textDisplay.js';
 
 getDataCSV();
-/*d3.csv('./donnee/tamere.csv', (data) => {
-    console.log(data);
-});*/
+//displayText();
 
 document.addEventListener('DOMContentLoaded', function() {
-    const rangeInput = document.getElementById('rangeInput');
-
-    rangeInput.addEventListener('input', function() {
-        const inputValue = this.value;
-        // Effectuez des actions en fonction de la valeur récupérée
-    });
+    //Au lancement on set le slider
+    rangeInputSet();
+    //Au lancement on affiche le texte
+    displayText();
+    //Au lancement on affiche le graphique
+    //displayGraph();
+    //Au lancement on affiche les images
+    //displayImages();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-
-
-});
 
 document.addEventListener('DOMContentLoaded', function() {
-    const rangeInput = document.getElementById('rangeInput');
-    const introTexts = document.querySelectorAll('.intro-text');
-    //const gallery = document.querySelector('.gallery');
 
-    function showAppropriateSection(value) {
+
+    function showAppropriateText(value) {
+        const introTexts = document.querySelectorAll('.intro-text');
+
         // Définissez les plages pour les sections ici
         const ranges = [
             { min: 1, max: 20 },
@@ -51,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    /*function showAppropriateGallery(value) {
+    function showAppropriateGallery(value) {
         const galleryRanges = [
             { min: 1, max: 20 },
             { min: 21, max: 42 },
@@ -74,19 +72,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 text.classList.remove('active');
             }
         });
-    }*/
-
+    }
 
     rangeInput.addEventListener('input', function() {
         const inputValue = parseInt(this.value);
-        showAppropriateSection(inputValue);
-        //showAppropriateGallery(inputValue);
+        showAppropriateText(inputValue);
         //Change le texte du label ayant l'id dateLabel en fonction de la valeur du rangeInput pour afficher une date
         document.getElementById('dateLabel').innerHTML = getDateFromDayNumber(inputValue);
     });
 
     // Affichez la section appropriée au chargement de la page
-    showAppropriateSection(parseInt(rangeInput.value));
+    //showAppropriateText(parseInt(rangeInput.value));
     //showAppropriateGallery(parseInt(rangeInput.value));
 
     let isPlaying = false;
@@ -115,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     playButton.addEventListener("click", togglePlay);
 });
-
 
 function getDateFromDayNumber(dayNumber) {
     const startDate = new Date(2022, 1, 24); // 24 février 2022
