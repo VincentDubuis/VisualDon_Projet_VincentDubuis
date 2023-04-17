@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ch-fr" dir="ltr">
 
 <head>
     <meta charset="utf-8">
@@ -8,9 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <script src="js/index.js" async></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="js/chart.js" async></script>
+    <script src="index.js" type="module" defer></script>
+
     <title>Russian losts after one year of war</title>
 </head>
 
@@ -52,15 +51,29 @@
             </section>
         </div>
         <div id="right">
-            <section id="images0">
+            <section id="images0" class="gallery">
                 <img src="img/PutinDeclareASpecialOperation.jpg" alt="Image 1">
                 <img src="img/zelensky_firstDay.jpg" alt="Image 2">
                 <img src="img/map_20220224.jpg" alt="Image 3">
                 <img src="img/ukrainefirstpictureofthewar.png" alt="Image 4">
             </section>
+            <!--<section id="images1" class="gallery">
+                <img src="img/PutinDeclareASpecialOperation.jpg" alt="Image 1">
+                <img src="img/zelensky_firstDay.jpg" alt="Image 2">
+                <img src="img/map_20220224.jpg" alt="Image 3">
+            </section>
+            <section id="images2" class="gallery">
+                <img src="img/PutinDeclareASpecialOperation.jpg" alt="Image 1">
+                <img src="img/zelensky_firstDay.jpg" alt="Image 2">
+            </section>-->
+        </div>
+        <div id="myDiv">
+            <h1>Barchart</h1>
+
         </div>
     </div>
     <div id="chartContainer" class="chart"></div>
+
 </body>
 
 </html>

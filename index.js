@@ -1,43 +1,16 @@
-/*const introText = document.querySelectorAll('.intro-text');
+import * as d3 from 'd3';
+import { getDataCSV } from './js/data.js';
 
-let currentTextIndex = 1;
-const interval = setInterval(() => {
-    introText[currentTextIndex - 1].classList.add('hidden');
-    currentTextIndex++;
-    if (currentTextIndex > introText.length) {
-        clearInterval(interval);
-    }
-    introText[currentTextIndex - 1].classList.remove('hidden');
-}, 1000);
-
-const slider = document.getElementById("mySlider");
-const sliderSections = document.querySelectorAll(".slider-section");
-const sliderProgress = document.querySelector(".slider-progress");
-/*const progress = () => {
-    slider.value = slider.value + 1;
-};
-slider.addEventListener("input", function() {
-            const value = slider.value;
-            const progressWidth = ((value - 1) / 364) * 100 + "%";
-            sliderProgress.style.width = progressWidth;
-
-            const sectionIndex = value - 1;
-            /*sliderSections.forEach((section, index) => {
-        if (index === sectionIndex) {
-            section.classList.add("active");
-        } else {
-            section.classList.remove("active");
-        }
-    });
+getDataCSV();
+/*d3.csv('./donnee/tamere.csv', (data) => {
+    console.log(data);
 });*/
-
 
 document.addEventListener('DOMContentLoaded', function() {
     const rangeInput = document.getElementById('rangeInput');
 
     rangeInput.addEventListener('input', function() {
         const inputValue = this.value;
-        console.log('Valeur du range input:', inputValue);
         // Effectuez des actions en fonction de la valeur récupérée
     });
 });
@@ -50,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const rangeInput = document.getElementById('rangeInput');
     const introTexts = document.querySelectorAll('.intro-text');
+    //const gallery = document.querySelector('.gallery');
 
     function showAppropriateSection(value) {
         // Définissez les plages pour les sections ici
@@ -77,15 +51,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    /*function showAppropriateGallery(value) {
+        const galleryRanges = [
+            { min: 1, max: 20 },
+            { min: 21, max: 42 },
+            { min: 43, max: 54 },
+            { min: 55, max: 66 },
+            { min: 67, max: 99 },
+            { min: 100, max: 149 },
+            { min: 150, max: 199 },
+            { min: 200, max: 249 },
+            { min: 250, max: 309 },
+            { min: 310, max: 365 },
+
+            // Ajoutez d'autres plages ici
+        ];
+
+        gallery.forEach((text, index) => {
+            if (value >= galleryRanges[index].min && value <= galleryRanges[index].max) {
+                text.classList.add('active');
+            } else {
+                text.classList.remove('active');
+            }
+        });
+    }*/
+
+
     rangeInput.addEventListener('input', function() {
         const inputValue = parseInt(this.value);
         showAppropriateSection(inputValue);
+        //showAppropriateGallery(inputValue);
         //Change le texte du label ayant l'id dateLabel en fonction de la valeur du rangeInput pour afficher une date
         document.getElementById('dateLabel').innerHTML = getDateFromDayNumber(inputValue);
     });
 
     // Affichez la section appropriée au chargement de la page
     showAppropriateSection(parseInt(rangeInput.value));
+    //showAppropriateGallery(parseInt(rangeInput.value));
 
     let isPlaying = false;
     let interval;
@@ -94,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function togglePlay() {
 
         if (isPlaying) {
-            console.log("Paused");
             clearInterval(interval);
             playButton.value = "Play";
         } else {
@@ -108,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     playButton.value = "Play";
                 }
             }, 500);
-            console.log("Playing");
             playButton.value = "Pause";
         }
         isPlaying = !isPlaying;

@@ -1,58 +1,66 @@
-d3.csv("../data/data_russianLost.csv", d3.autoType)
-    .then((data) => {
-        data.forEach((d) => {
-            d.date = d3.timeParse("%Y-%m-%d")(d.date);
-            d.value = +d.value;
-        });
+import { csv } from "d3-fetch";
+import { timeParse } from "d3-time-format";
+import { scaleTime, scaleLinear } from "d3-scale";
+import { extent } from "d3-array";
+import { axisBottom, axisLeft } from "d3-axis";
+import { select } from "d3-selection";
+import { line } from "d3-shape";
+import { csv } from 'd3';
+import { timeParse } from 'd3-time-format';
+import { scaleTime, scaleLinear } from 'd3-scale';
+import { extent } from 'd3-array';
+import { axisBottom, axisLeft } from 'd3-axis';
+import { select } from 'd3-selection';
+import { line } from 'd3-shape';
+import { csv } from 'd3';
+import { newData } from './data.js';
 
-        const margin = { top: 20, right: 20, bottom: 30, left: 50 },
-            width = chartContainer.clientWidth - margin.left - margin.right,
-            height = chartContainer.clientHeight - margin.top - margin.bottom;
+// Marges et translations
+const margin = { top: 10, right: 40, bottom: 30, left: 40 },
+    width = 450 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
-        const x = d3
-            .scaleBand()
-            .domain(data.map((d) => d.date))
-            .range([margin.left, width - margin.right])
-            .padding(0.1);
 
-        const y = d3
-            .scaleLinear()
-            .domain([0, d3.max(data, (d) => d.value)])
-            .nice()
-            .range([height - margin.bottom, margin.top]);
 
-        const xAxis = (g) =>
-            g
-            .attr("transform", `translate(0,${height - margin.bottom})`)
-            .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
-            .attr("font-size", "12px");
+// Charger les données depuis un fichier CSV
+/*d3.csv("..\data\data_russianLost.csv").then(data => {
+    // Convertir les chaînes de caractères en dates et les valeurs numériques
+    data.forEach(d => {
+        d.date = d3.timeParse("%Y-%m-%d")(d.date);
+        d.value = +d.value;
 
-        const yAxis = (g) =>
-            g
-            .attr("transform", `translate(${margin.left},0)`)
-            .call(d3.axisLeft(y))
-            .attr("font-size", "12px");
-
-        const svg = d3
-            .select("#chartContainer")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
-
-        svg.append("g").call(xAxis);
-        svg.append("g").call(yAxis);
-
-        svg
-            .append("g")
-            .selectAll("rect")
-            .data(data)
-            .join("rect")
-            .attr("x", (d) => x(d.date))
-            .attr("y", (d) => y(d.value))
-            .attr("height", (d) => y(0) - y(d.value))
-            .attr("width", x.bandwidth())
-            .attr("fill", "steelblue");
-    })
-    .catch((error) => {
-        console.error("Error loading data:", error);
     });
+    // Echelle de temps
+    const timeScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.date))
+        .range([0, width]);
+
+});
+*/
+
+
+// Ajouter le svg
+const monSvg = d3.select("#myDiv")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .style("background-color", "lightgrey")
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+// Dessiner les rectangles
+monSvg
+    .selectAll('rect')
+    .data(myNewData)
+    .join(enter => enter.append('rect')
+        .attr('x', d => bandScale(d.day))
+        .attr('y', d => height - d.value)
+        .attr('width', bandScale.bandwidth())
+        .attr('height', d => d.value));
+
+// Dessiner l'axe X
+const axisBottom = d3.axisBottom(bandScale)
+const xAxis = monSvg.append('g')
+    .attr("transform", "translate(0," + height + ")")
+    .call(axisBottom)

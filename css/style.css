@@ -1,12 +1,12 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
+    background-color: #222629;
 }
 
 header {
     text-align: center;
-    background-color: #f8f8f8;
+    background-color: #1F2833;
     padding: 20px;
 }
 
@@ -19,7 +19,7 @@ header {
 #slider {
     width: 100%;
     height: 200px;
-    background-color: #ffffff;
+    background-color: #474B4F;
     grid-column: 1 / 3;
     grid-row: 1 / 2;
     display: flex;
@@ -35,7 +35,7 @@ header {
     text-align: center;
     width: 100%;
     z-index: 1;
-    color: white;
+    color: rgb(0, 0, 0);
     font-size: 32px;
 }
 
@@ -105,6 +105,25 @@ header {
     justify-content: center;
 }
 
+
+/*.gallery {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}*/
+
+
+/*.gallery.active {
+    opacity: 1;
+}*/
+
 img {
     width: 20vw;
     height: auto;
@@ -124,6 +143,12 @@ img {
 }
 
 .chart {
+    width: 100%;
+    height: 100%;
+    grid-column: 1 / 3;
+}
+
+#myDiv {
     width: 100%;
     height: 100%;
     grid-column: 1 / 3;
