@@ -5,6 +5,7 @@ import { getDataCSV } from './js/data.js';
 document.addEventListener('DOMContentLoaded', function() {
     const rangeInput = document.getElementById('rangeInput');
     const introTexts = document.querySelectorAll('.intro-text');
+    const gallery = document.querySelectorAll('.gallery');
 
     rangeInput.addEventListener('input', function() {
         const inputValue = this.value;
@@ -20,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showAppropriateSection(value) {
         const ranges = [
-            { min: 1, max: 20 },
-            { min: 21, max: 42 },
+            { min: 1, max: 5 },
+            { min: 6, max: 42 },
             { min: 43, max: 54 },
             { min: 55, max: 66 },
             { min: 67, max: 99 },
@@ -31,8 +32,22 @@ document.addEventListener('DOMContentLoaded', function() {
             { min: 250, max: 309 },
             { min: 310, max: 365 },
         ];
+        const galleryRanges = [
+            { min: 1, max: 100 },
+            { min: 101, max: 255 },
+            { min: 256, max: 365 }
+        ];
+
         introTexts.forEach((text, index) => {
             if (value >= ranges[index].min && value <= ranges[index].max) {
+                text.classList.add('active');
+            } else {
+                text.classList.remove('active');
+            }
+        });
+
+        gallery.forEach((text, index) => {
+            if (value >= galleryRanges[index].min && value <= galleryRanges[index].max) {
                 text.classList.add('active');
             } else {
                 text.classList.remove('active');
@@ -92,7 +107,7 @@ function getDateFromDayNumber(dayNumber) {
 }
 
 function createGraph(myData) {
-    const margin = { top: 20, right: 10, bottom: 30, left: 10 };
+    const margin = { top: 20, right: 60, bottom: 75, left: 60 };
     const width = window.innerWidth - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     const parseDate = d3.timeParse("%Y-%m-%d");
@@ -133,8 +148,28 @@ function createGraph(myData) {
         .domain([0, d3.max(data, d => +d.value)]);
 
     svg.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y))
 
+    const tooltip = d3.select("#tooltip");
+
+    const showTooltip = function(event, d) {
+        tooltip
+            .style("opacity", 1)
+            .html(`Date: ${d3.timeFormat("%d/%m/%Y")(d.date)}<br>Value: ${d.value}`)
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 50) + "px");
+    };
+
+    const moveTooltip = function(event, d) {
+        tooltip
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 50) + "px");
+    };
+
+    const hideTooltip = function(event, d) {
+        tooltip
+            .style("opacity", 0);
+    };
 
 
     svg.selectAll(".bar")
@@ -144,5 +179,8 @@ function createGraph(myData) {
         .attr("x", d => x(d.date))
         .attr("y", d => y(d.value))
         .attr("width", x.bandwidth())
-        .attr("height", d => height - y(d.value));
+        .attr("height", d => height - y(d.value))
+        .on("mouseover", (event, d) => showTooltip(event, d))
+        .on("mousemove", (event, d) => moveTooltip(event, d))
+        .on("mouseleave", (event, d) => hideTooltip(event, d));
 }
