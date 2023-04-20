@@ -5,31 +5,20 @@ import { getDataCSV } from './js/data.js';
 document.addEventListener('DOMContentLoaded', function() {
     const rangeInput = document.getElementById('rangeInput');
     const introTexts = document.querySelectorAll('.intro-text');
-    //const gallery = document.querySelector('.gallery');
 
     rangeInput.addEventListener('input', function() {
         const inputValue = this.value;
         console.log('Valeur du range input:', inputValue);
-        // Effectuez des actions en fonction de la valeur récupérée
     });
     async function processData() {
         const data = await getDataCSV();
-        console.log(data); // Now we have access to the data
-        // Do any necessary processing on the data
+        console.log(data);
+        createGraph(data);
     }
 
     processData();
 
-
-    /* Loop through your data and push the dates and values into the arrays
-    for (let i = 0; i < data.length; i++) {
-        dates.push(data[i].date);
-        values.push(data[i].value);
-    }
-    console.log(dates);
-*/
     function showAppropriateSection(value) {
-        // Définissez les plages pour les sections ici
         const ranges = [
             { min: 1, max: 20 },
             { min: 21, max: 42 },
@@ -41,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
             { min: 200, max: 249 },
             { min: 250, max: 309 },
             { min: 310, max: 365 },
-            // Ajoutez d'autres plages ici
         ];
         introTexts.forEach((text, index) => {
             if (value >= ranges[index].min && value <= ranges[index].max) {
@@ -51,29 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    /*function showAppropriateGallery(value) {
-        const galleryRanges = [
-            { min: 1, max: 20 },
-            { min: 21, max: 42 },
-            { min: 43, max: 54 },
-            { min: 55, max: 66 },
-            { min: 67, max: 99 },
-            { min: 100, max: 149 },
-            { min: 150, max: 199 },
-            { min: 200, max: 249 },
-            { min: 250, max: 309 },
-            { min: 310, max: 365 },
-            // Ajoutez d'autres plages ici
-        ];
-        gallery.forEach((text, index) => {
-            if (value >= galleryRanges[index].min && value <= galleryRanges[index].max) {
-                text.classList.add('active');
-            } else {
-                text.classList.remove('active');
-            }
-        });
-    }*/
 
 
     rangeInput.addEventListener('input', function() {
@@ -109,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     playButton.value = "Play";
                 }
             }, 500);
-            console.log("Playing");
             playButton.value = "Pause";
         }
         isPlaying = !isPlaying;
@@ -125,4 +89,60 @@ function getDateFromDayNumber(dayNumber) {
     const year = startDate.getFullYear();
     const newDate = `${day}/${month}/${year}`
     return newDate;
+}
+
+function createGraph(myData) {
+    const margin = { top: 20, right: 10, bottom: 30, left: 10 };
+    const width = window.innerWidth - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+    const parseDate = d3.timeParse("%Y-%m-%d");
+    const data = myData.map(d => {
+        return {
+            date: parseDate(d.date),
+            value: +d.value
+        }
+    });
+
+    const svg = d3.select("#my_dataviz")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+        .range([0, width])
+        .domain(data.map(d => d.date))
+        .padding(0.1);
+
+    const customTimeFormat = d3.timeFormat("%d/%m/%Y");
+    const axisBottom = d3.axisBottom(x)
+        .tickValues(x.domain().filter((d, i) => {
+            return i % 30 === 0; // Afficher une date tous les 30 jours
+        }))
+        .tickFormat(d => customTimeFormat(d));
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(axisBottom)
+        .selectAll("text")
+        .attr("transform", "translate(25)rotate(0)")
+        .style("text-anchor", "end");
+
+    const y = d3.scaleLinear()
+        .range([height, 0])
+        .domain([0, d3.max(data, d => +d.value)]);
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+
+
+    svg.selectAll(".bar")
+        .data(data)
+        .join("rect")
+        .attr("class", "bar")
+        .attr("x", d => x(d.date))
+        .attr("y", d => y(d.value))
+        .attr("width", x.bandwidth())
+        .attr("height", d => height - y(d.value));
 }
