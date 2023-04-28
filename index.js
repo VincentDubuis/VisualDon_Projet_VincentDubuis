@@ -61,8 +61,13 @@ document.addEventListener('DOMContentLoaded', function() {
         showAppropriateSection(inputValue);
         //showAppropriateGallery(inputValue);
         //Change le texte du label ayant l'id dateLabel en fonction de la valeur du rangeInput pour afficher une date
-        document.getElementById('dateLabel').innerHTML = getDateFromDayNumber(inputValue);
+        const currentDate = getDateFromDayNumber(inputValue).slice(0)[0]; // Ici, on accède au premier élément du tableau
+        document.getElementById('dateLabel').innerHTML = currentDate;
+
+        // Ajoutez cette ligne pour mettre à jour le graphique
+        updateGraph(graphData, new Date(currentDate.split("/")[2], currentDate.split("/")[1] - 1, currentDate.split("/")[0]));
     });
+
 
     // Affichez la section appropriée au chargement de la page
     showAppropriateSection(parseInt(rangeInput.value));
@@ -102,14 +107,24 @@ function getDateFromDayNumber(dayNumber) {
     const day = startDate.getDate().toString().padStart(2, '0');
     const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
     const year = startDate.getFullYear();
-    const newDate = `${day}/${month}/${year}`
+    const newDate = [`${day}/${month}/${year}` /*, day, month, year*/ ]
     return newDate;
 }
 
+let graphData;
+
+const margin = { top: 20, right: 60, bottom: 75, left: 60 };
+const width = window.innerWidth - margin.left - margin.right;
+const height = 400 - margin.top - margin.bottom;
+
+// Déclarez ces variables en dehors de la fonction createGraph
+let x, y, svg, axisBottom;
+
 function createGraph(myData) {
-    const margin = { top: 20, right: 60, bottom: 75, left: 60 };
+    /*const margin = { top: 20, right: 60, bottom: 75, left: 60 };
     const width = window.innerWidth - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const height = 400 - margin.top - margin.bottom;*/
+
     const parseDate = d3.timeParse("%Y-%m-%d");
     const data = myData.map(d => {
         return {
@@ -118,19 +133,22 @@ function createGraph(myData) {
         }
     });
 
-    const svg = d3.select("#my_dataviz")
+    graphData = data;
+
+    svg = d3.select("#my_dataviz")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleBand()
+    x = d3.scaleBand()
         .range([0, width])
         .domain(data.map(d => d.date))
         .padding(0.1);
 
     const customTimeFormat = d3.timeFormat("%d/%m/%Y");
-    const axisBottom = d3.axisBottom(x)
+
+    axisBottom = d3.axisBottom(x)
         .tickValues(x.domain().filter((d, i) => {
             return i % 30 === 0; // Afficher une date tous les 30 jours
         }))
@@ -138,12 +156,13 @@ function createGraph(myData) {
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
+        .attr("class", "x-axis") // Ajoutez cette ligne
         .call(axisBottom)
         .selectAll("text")
         .attr("transform", "translate(25)rotate(0)")
         .style("text-anchor", "end");
 
-    const y = d3.scaleLinear()
+    y = d3.scaleLinear()
         .range([height, 0])
         .domain([0, d3.max(data, d => +d.value)]);
 
@@ -174,6 +193,50 @@ function createGraph(myData) {
 
     svg.selectAll(".bar")
         .data(data)
+        .join("rect")
+        .attr("class", "bar")
+        .attr("x", d => x(d.date))
+        .attr("y", d => y(d.value))
+        .attr("width", x.bandwidth())
+        .attr("height", d => height - y(d.value))
+        .on("mouseover", (event, d) => showTooltip(event, d))
+        .on("mousemove", (event, d) => moveTooltip(event, d))
+        .on("mouseleave", (event, d) => hideTooltip(event, d));
+}
+
+function updateGraph(data, xMaxDate) {
+    const filteredData = data.filter(d => d.date <= xMaxDate);
+    x.domain(filteredData.map(d => d.date));
+
+    // Mettre à jour les dates sur l'axe x
+    axisBottom.tickValues(x.domain().filter((d, i) => {
+        return i % 30 === 0; // Afficher une date tous les 30 jours
+    }));
+    svg.select("g.x-axis").call(axisBottom);
+
+    const tooltip = d3.select("#tooltip");
+
+    const showTooltip = function(event, d) {
+        tooltip
+            .style("opacity", 1)
+            .html(`Date: ${d3.timeFormat("%d/%m/%Y")(d.date)}<br>Value: ${d.value}`)
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 50) + "px");
+    };
+
+    const moveTooltip = function(event, d) {
+        tooltip
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 50) + "px");
+    };
+
+    const hideTooltip = function(event, d) {
+        tooltip
+            .style("opacity", 0);
+    };
+
+    svg.selectAll(".bar")
+        .data(filteredData)
         .join("rect")
         .attr("class", "bar")
         .attr("x", d => x(d.date))
