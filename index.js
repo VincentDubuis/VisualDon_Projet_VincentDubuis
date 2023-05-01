@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { getDataCSV } from './js/data.js';
 
-
+const speed = 2000;
 document.addEventListener('DOMContentLoaded', function() {
     const rangeInput = document.getElementById('rangeInput');
     const introTexts = document.querySelectorAll('.intro-text');
@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentDate = getDateFromDayNumber(inputValue).slice(0)[0]; // Ici, on accède au premier élément du tableau
         document.getElementById('dateLabel').innerHTML = currentDate;
 
-        // Ajoutez cette ligne pour mettre à jour le graphique
-        updateGraph(graphData, new Date(currentDate.split("/")[2], currentDate.split("/")[1] - 1, currentDate.split("/")[0]));
+        // Ajoute cette ligne pour mettre à jour le graphique
+        updateGraph(graphData, new Date(currentDate.split("/")[2], currentDate.split("/")[1] - 1, currentDate.split("/")[0]), speed);
     });
 
 
-    // Affichez la section appropriée au chargement de la page
+    // Affiche la section appropriée au chargement de la page
     showAppropriateSection(parseInt(rangeInput.value));
     //showAppropriateGallery(parseInt(rangeInput.value));
 
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     clearInterval(interval);
                     playButton.value = "Play";
                 }
-            }, 500);
+            }, speed);
             playButton.value = "Pause";
         }
         isPlaying = !isPlaying;
@@ -117,14 +117,10 @@ const margin = { top: 20, right: 60, bottom: 75, left: 60 };
 const width = window.innerWidth - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 
-// Déclarez ces variables en dehors de la fonction createGraph
 let x, y, svg, axisBottom;
 
 function createGraph(myData) {
-    /*const margin = { top: 20, right: 60, bottom: 75, left: 60 };
-    const width = window.innerWidth - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;*/
-
+    rangeInput.value = 1;
     const parseDate = d3.timeParse("%Y-%m-%d");
     const data = myData.map(d => {
         return {
@@ -150,20 +146,20 @@ function createGraph(myData) {
 
     axisBottom = d3.axisBottom(x)
         .tickValues(x.domain().filter((d, i) => {
-            return i % 30 === 0; // Afficher une date tous les 30 jours
+            return (i - 1) % 30 === 0;
         }))
         .tickFormat(d => customTimeFormat(d));
 
     svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .attr("class", "x-axis") // Ajoutez cette ligne
+        .attr("transform", "translate(0,0)")
+        .attr("class", "x-axis")
         .call(axisBottom)
         .selectAll("text")
-        .attr("transform", "translate(25)rotate(0)")
+        .attr("transform", "translate(25,-25)rotate(0)")
         .style("text-anchor", "end");
 
     y = d3.scaleLinear()
-        .range([height, 0])
+        .range([0, height])
         .domain([0, d3.max(data, d => +d.value)]);
 
     svg.append("g")
@@ -196,23 +192,24 @@ function createGraph(myData) {
         .join("rect")
         .attr("class", "bar")
         .attr("x", d => x(d.date))
-        .attr("y", d => y(d.value))
+        .attr("y", d => 0)
         .attr("width", x.bandwidth())
-        .attr("height", d => height - y(d.value))
+        .attr("height", d => y(d.value))
         .on("mouseover", (event, d) => showTooltip(event, d))
         .on("mousemove", (event, d) => moveTooltip(event, d))
         .on("mouseleave", (event, d) => hideTooltip(event, d));
+    updateGraph(graphData, new Date(2022, 1, 24), speed);
 }
 
-function updateGraph(data, xMaxDate) {
+function updateGraph(data, xMaxDate, animationDuration) {
     const filteredData = data.filter(d => d.date <= xMaxDate);
     x.domain(filteredData.map(d => d.date));
 
-    // Mettre à jour les dates sur l'axe x
     axisBottom.tickValues(x.domain().filter((d, i) => {
-        return i % 30 === 0; // Afficher une date tous les 30 jours
+        return i % 30 === 0 || i === 0; // Affiche une date tous les 30 jours et inclut la première date
     }));
-    svg.select("g.x-axis").call(axisBottom);
+    svg.select("g.x-axis").call(axisBottom)
+        .attr("transform", "translate(25,-25)rotate(0)");
 
     const tooltip = d3.select("#tooltip");
 
@@ -235,15 +232,48 @@ function updateGraph(data, xMaxDate) {
             .style("opacity", 0);
     };
 
-    svg.selectAll(".bar")
-        .data(filteredData)
-        .join("rect")
+    const bars = svg.selectAll(".bar")
+        .data(filteredData, d => d.date);
+
+
+    bars.attr("class", "bar")
+        .attr("x", d => x(d.date))
+        .attr("y", d => 0)
+        .attr("width", x.bandwidth())
+        .attr("height", d => y(d.value));
+
+
+    bars.enter()
+        .append("rect")
         .attr("class", "bar")
         .attr("x", d => x(d.date))
-        .attr("y", d => y(d.value))
+        .attr("y", 0)
         .attr("width", x.bandwidth())
-        .attr("height", d => height - y(d.value))
+        .attr("height", 0)
+        .transition()
+        .duration(animationDuration)
+        .attr("y", d => 0)
+        .attr("height", d => y(d.value));
+
+    // Supprime les barres inutiles
+    bars.exit().remove();
+
+    // Gère les infobulles pour les barres
+    svg.selectAll(".bar")
         .on("mouseover", (event, d) => showTooltip(event, d))
         .on("mousemove", (event, d) => moveTooltip(event, d))
         .on("mouseleave", (event, d) => hideTooltip(event, d));
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    // Ajoutez la légende de l'axe des y
+    svg.append("text")
+        .attr("transform", "rotate(0)")
+        .attr("y", height)
+        .attr("x", margin.left)
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Blessés/morts russes")
+        .attr("font-size", "large");
 }
