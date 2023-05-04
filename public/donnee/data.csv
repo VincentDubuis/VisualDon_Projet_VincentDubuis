@@ -1,14 +1,15 @@
-date,value
-2022-02-24,800
-2022-02-25,1000
+date,value,info,picture
+2022-02-23,0,"Depuis plusieurs mois, la Russie amasse les troupes autour de l'Ukraine, les États-Unis préviennent d'une guerre imminente et l'Ukraine déclare la mobilisation générale après que Poutine ait annoncé des intentions belliqueuse envers l'Ukraine. Les troupes Russes sont entrée dans les régions séparatistes","Day0.jpg"
+2022-02-24,800,"La Russie lance ses troupes pour une prise éclaire de l'Ukraine. Après une grande vague de bombardement, les chars et les hélicos Russe avancent dans le territoire ukrainien.","Day1.jpg"
+2022-02-25,1000,"Les troupes d'élite aéroportés russes prennent l'aéroport d'Hostomel, mais sans soutien, ils sont anéantis.","HOSTOMEL-BATTLE-UKRAINE_2.jpg"
 2022-02-26,1100
-2022-02-27,1000
+2022-02-27,1000,"Les forces ukrainiennes reculent sur tout le front, mais résiste dans la région de Kiev mettant fin à la tentative d'une guerre éclaire."
 2022-02-28,1000
 2022-03-01,1040
 2022-03-02,1060
-2022-03-03,1070
-2022-03-04,1030
-2022-03-05,1000
+2022-03-03,1070,"La Russie prend Kherson, Melitpol et pousse vers Marioupol au sud.","southRussianOffensive_20220303.jpg"
+2022-03-04,1030,
+2022-03-05,1000,"Les Russes connaissent des problèmes logistiques, les camions de ravitallement sont attaqués sur les arrières.","ukrainetweet_20220228.jpg"
 2022-03-06,1000
 2022-03-07,500
 2022-03-08,500
@@ -16,22 +17,22 @@ date,value
 2022-03-10,300
 2022-03-11,200
 2022-03-12,400
-2022-03-13,400
+2022-03-13,400s
 2022-03-14,200
 2022-03-15,100
 2022-03-16,200
-2022-03-17,200
+2022-03-17,200,,"map20220317.jpg"
 2022-03-18,200
 2022-03-19,300
 2022-03-20,300
-2022-03-21,300
+2022-03-21,300,"L'armée ukrainienne résiste au porte de Kiev","battleofkiev_20220321.jpg"
 2022-03-22,300
 2022-03-23,300
 2022-03-24,300
 2022-03-25,200
 2022-03-26,200
 2022-03-27,300
-2022-03-28,200
+2022-03-28,200,"Reprise de l'aéroport d'Hostomel","hostomelairport_planedestroy.jpg"
 2022-03-29,200
 2022-03-30,150
 2022-03-31,100
@@ -41,7 +42,7 @@ date,value
 2022-04-04,200
 2022-04-05,150
 2022-04-06,150
-2022-04-07,200
+2022-04-07,200,,"map07042022.jpg"
 2022-04-08,200
 2022-04-09,150
 2022-04-10,200
@@ -82,7 +83,7 @@ date,value
 2022-05-15,200
 2022-05-16,300
 2022-05-17,200
-2022-05-18,400
+2022-05-18,400,"Après des mois de résistance côté Ukrainien, les Russes se retirent du nord pour renforcer les autres front"
 2022-05-19,200
 2022-05-20,200
 2022-05-21,150
@@ -94,7 +95,7 @@ date,value
 2022-05-27,150
 2022-05-28,250
 2022-05-29,150
-2022-05-30,200
+2022-05-30,200,"La situtation reste tendu à l'est où la guerre et au porte de la deuxième plus grande ville du pays, Kharkiv."
 2022-05-31,150
 2022-06-01,200
 2022-06-02,150
@@ -166,7 +167,7 @@ date,value
 2022-08-07,300
 2022-08-08,140
 2022-08-09,300
-2022-08-10,160
+2022-08-10,160,"Après deux contre-offensive, les Ukrainiens repousse les Russes de la région de Kharkiv et de la ville de Kherson."
 2022-08-11,200
 2022-08-12,200
 2022-08-13,200
@@ -197,19 +198,19 @@ date,value
 2022-09-07,460
 2022-09-08,640
 2022-09-09,650
-2022-09-10,350
+2022-09-10,350,"L'armée ukrainienne poursuit sa percée sur Kharkiv","pierceInKharkiv_20220910.jpg"
 2022-09-11,400
-2022-09-12,300
+2022-09-12,300,"L'armée Russe s'effondre face à l'avancée ukrainienne","finishToTakeKharkiv.jpg"
 2022-09-13,350
 2022-09-14,300
 2022-09-15,350
 2022-09-16,200
-2022-09-17,200
+2022-09-17,200,,"battleLyman.jpg"
 2022-09-18,230
 2022-09-19,170
 2022-09-20,160
 2022-09-21,300
-2022-09-22,400
+2022-09-22,400,"On the Kherson front, the offensive continue","khersonOffensive1.jpg"
 2022-09-23,550
 2022-09-24,240
 2022-09-25,400
@@ -218,15 +219,15 @@ date,value
 2022-09-28,400
 2022-09-29,430
 2022-09-30,500
-2022-10-01,530
+2022-10-01,530,,"kharkivBattleForKremina.jpg"
 2022-10-02,400
 2022-10-03,320
-2022-10-04,370
+2022-10-04,370,"Ukrainan army make a pierce in the Russian defense near Kherson.","KhersonOffensivePierce1.jpg"
 2022-10-05,200
 2022-10-06,330
 2022-10-07,350
 2022-10-08,380
-2022-10-09,440
+2022-10-09,440,"Après des mois de guerre, l'hiver est de retour et fige le front."
 2022-10-10,370
 2022-10-11,240
 2022-10-12,270
@@ -241,7 +242,7 @@ date,value
 2022-10-21,100
 2022-10-22,320
 2022-10-23,400
-2022-10-24,470
+2022-10-24,470,"Les forces sont alors concentrés à Bakhmut, où les Russes cherche une victoire pour atteindre la ville de Kramatorsk, dernière grande ville de la région de Donetsk.","bakhmutFront1.jpg"
 2022-10-25,480
 2022-10-26,480
 2022-10-27,320
@@ -268,20 +269,20 @@ date,value
 2022-11-17,400
 2022-11-18,350
 2022-11-19,420
-2022-11-20,330
+2022-11-20,330,,"trenchBakhmut_2022_11_20.webp"
 2022-11-21,390
 2022-11-22,400
 2022-11-23,410
 2022-11-24,310
 2022-11-25,430
 2022-11-26,560
-2022-11-27,600
+2022-11-27,600,,"trenchBakhmut_2022_11_27.webp"
 2022-11-28,590
 2022-11-29,480
 2022-11-30,500
 2022-12-01,560
 2022-12-02,650
-2022-12-03,510
+2022-12-03,510,"La Russie subit de très lourdes perte pour prendre les alentours de Bakhmut, les Ukrainiens essayent d'épuiser les Russes sur la ville."
 2022-12-04,550
 2022-12-05,540
 2022-12-06,510
@@ -364,4 +365,4 @@ date,value
 2023-02-21,760
 2023-02-22,620
 2023-02-23,790
-2023-02-24,970
+2023-02-24,970,"Après un an de guerre, les Russes réclament les régions de Kherson, Zaporizhzhia, Lougansk et Donetsk."

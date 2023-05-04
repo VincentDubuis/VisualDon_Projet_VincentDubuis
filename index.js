@@ -2,81 +2,81 @@ import * as d3 from 'd3';
 import { getDataCSV } from './js/data.js';
 
 const speed = 2000;
+const playButton = document.querySelector("#playButton");
+const margin = { top: 20, right: 60, bottom: 75, left: 60 };
+const width = window.innerWidth - margin.left - margin.right;
+const height = 400 - margin.top - margin.bottom;
+let x, y, svg, axisBottom, interval, graphData;
+let isPlaying = false;
+const rangeInput = document.getElementById('rangeInput');
+const introTexts = document.querySelectorAll('.intro-text');
+const gallery = document.querySelectorAll('.gallery');
+const infoText = document.getElementById('info-text');
+let events;
 document.addEventListener('DOMContentLoaded', function() {
-    const rangeInput = document.getElementById('rangeInput');
-    const introTexts = document.querySelectorAll('.intro-text');
-    const gallery = document.querySelectorAll('.gallery');
-
-    rangeInput.addEventListener('input', function() {
-        const inputValue = this.value;
-        console.log('Valeur du range input:', inputValue);
+    //Charge les données et crée le graphique
+    async function getData() {
+        const dataText = await getDataCSV();
+        return dataText;
+    }
+    //Event est une promesse qui contient les données
+    const event = getData();
+    //Quand on a les données, on les affiche dans la console et on crée le graphique
+    event.then(function(result) {
+        console.log(result);
+        events = result;
+        createGraph(result);
     });
-    async function processData() {
-        const data = await getDataCSV();
-        console.log(data);
-        createGraph(data);
-    }
 
-    processData();
-
-    function showAppropriateSection(value) {
-        const ranges = [
-            { min: 1, max: 5 },
-            { min: 6, max: 42 },
-            { min: 43, max: 54 },
-            { min: 55, max: 66 },
-            { min: 67, max: 99 },
-            { min: 100, max: 149 },
-            { min: 150, max: 199 },
-            { min: 200, max: 249 },
-            { min: 250, max: 309 },
-            { min: 310, max: 365 },
-        ];
-        const galleryRanges = [
-            { min: 1, max: 100 },
-            { min: 101, max: 255 },
-            { min: 256, max: 365 }
-        ];
-
-        introTexts.forEach((text, index) => {
-            if (value >= ranges[index].min && value <= ranges[index].max) {
-                text.classList.add('active');
-            } else {
-                text.classList.remove('active');
-            }
-        });
-
-        gallery.forEach((text, index) => {
-            if (value >= galleryRanges[index].min && value <= galleryRanges[index].max) {
-                text.classList.add('active');
-            } else {
-                text.classList.remove('active');
-            }
-        });
-    }
-
-
+    // Fonction pour afficher les sections en fonction de la valeur du rangeInput
     rangeInput.addEventListener('input', function() {
         const inputValue = parseInt(this.value);
-        showAppropriateSection(inputValue);
-        //showAppropriateGallery(inputValue);
         //Change le texte du label ayant l'id dateLabel en fonction de la valeur du rangeInput pour afficher une date
         const currentDate = getDateFromDayNumber(inputValue).slice(0)[0]; // Ici, on accède au premier élément du tableau
         document.getElementById('dateLabel').innerHTML = currentDate;
-
+        // Met à jour le texte d'information
+        updateContent(currentDate, events);
         // Ajoute cette ligne pour mettre à jour le graphique
         updateGraph(graphData, new Date(currentDate.split("/")[2], currentDate.split("/")[1] - 1, currentDate.split("/")[0]), speed);
     });
 
+    function updateContent(currentDate, events) {
+        const inputDate = new Date(currentDate.split('/').reverse().join('-'));
 
-    // Affiche la section appropriée au chargement de la page
-    showAppropriateSection(parseInt(rangeInput.value));
-    //showAppropriateGallery(parseInt(rangeInput.value));
+        const filteredEvents = events.filter(event => {
+            const eventDate = new Date(event.date);
+            return eventDate <= inputDate;
+        });
 
-    let isPlaying = false;
-    let interval;
-    const playButton = document.querySelector("#playButton");
+        let lastEventWithInfo = null;
+        let lastEventWithPicture = null;
 
+        for (let i = filteredEvents.length - 1; i >= 0; i--) {
+            if (!lastEventWithInfo && filteredEvents[i].info) {
+                lastEventWithInfo = filteredEvents[i];
+            }
+            if (!lastEventWithPicture && filteredEvents[i].picture) {
+                lastEventWithPicture = filteredEvents[i];
+            }
+            if (lastEventWithInfo && lastEventWithPicture) {
+                break;
+            }
+        }
+
+        if (lastEventWithInfo && lastEventWithInfo.info) {
+            infoText.textContent = lastEventWithInfo.info;
+        } else {
+            infoText.textContent = '';
+        }
+
+        // Mise à jour des images
+        const imageSection = document.getElementById('images0');
+        if (lastEventWithPicture && lastEventWithPicture.picture) {
+            imageSection.innerHTML = `<img src="img/${lastEventWithPicture.picture}" alt="${lastEventWithPicture.picture.split('.')[0]}">`;
+        } else {}
+    }
+
+    //Bouton Play/Pause
     function togglePlay() {
 
         if (isPlaying) {
@@ -102,22 +102,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function getDateFromDayNumber(dayNumber) {
-    const startDate = new Date(2022, 1, 24); // 24 février 2022
+    const startDate = new Date(2022, 1, 23);
     startDate.setDate(startDate.getDate() + dayNumber - 1);
     const day = startDate.getDate().toString().padStart(2, '0');
     const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
     const year = startDate.getFullYear();
-    const newDate = [`${day}/${month}/${year}` /*, day, month, year*/ ]
+    const newDate = [`${day}/${month}/${year}`]
     return newDate;
 }
-
-let graphData;
-
-const margin = { top: 20, right: 60, bottom: 75, left: 60 };
-const width = window.innerWidth - margin.left - margin.right;
-const height = 400 - margin.top - margin.bottom;
-
-let x, y, svg, axisBottom;
 
 function createGraph(myData) {
     rangeInput.value = 1;
@@ -163,14 +155,25 @@ function createGraph(myData) {
         .domain([0, d3.max(data, d => +d.value)]);
 
     svg.append("g")
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(y));
+
+    // Ajoute la légende de l'axe des y
+    svg.append("text")
+        .attr("transform", "rotate(0)")
+        .attr("y", height)
+        .attr("x", margin.left)
+        .attr("dy", "1em")
+        .attr("z-index", "2")
+        .style("text-anchor", "middle")
+        .text("Russian injured or dead in Ukraine")
+        .attr("font-size", "large");
 
     const tooltip = d3.select("#tooltip");
 
     const showTooltip = function(event, d) {
         tooltip
             .style("opacity", 1)
-            .html(`Date: ${d3.timeFormat("%d/%m/%Y")(d.date)}<br>Value: ${d.value}`)
+            .html(`Date: ${d3.timeFormat("%d/%m/%Y")(d.date)}<br>Injureds/deaths: ${d.value}`)
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 50) + "px");
     };
@@ -195,10 +198,19 @@ function createGraph(myData) {
         .attr("y", d => 0)
         .attr("width", x.bandwidth())
         .attr("height", d => y(d.value))
+        .attr("z-index", "1")
         .on("mouseover", (event, d) => showTooltip(event, d))
         .on("mousemove", (event, d) => moveTooltip(event, d))
         .on("mouseleave", (event, d) => hideTooltip(event, d));
-    updateGraph(graphData, new Date(2022, 1, 24), speed);
+    updateGraph(graphData, new Date(2022, 1, 23), speed);
+
+    svg.append("text")
+        .attr("id", "total-counter")
+        .attr("x", width / 2)
+        .attr("y", height)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "20px")
+        .text("Total: 0");
 }
 
 function updateGraph(data, xMaxDate, animationDuration) {
@@ -216,7 +228,7 @@ function updateGraph(data, xMaxDate, animationDuration) {
     const showTooltip = function(event, d) {
         tooltip
             .style("opacity", 1)
-            .html(`Date: ${d3.timeFormat("%d/%m/%Y")(d.date)}<br>Value: ${d.value}`)
+            .html(`Date: ${d3.timeFormat("%d/%m/%Y")(d.date)}<br>Injureds/deaths: ${d.value}`)
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 50) + "px");
     };
@@ -240,7 +252,8 @@ function updateGraph(data, xMaxDate, animationDuration) {
         .attr("x", d => x(d.date))
         .attr("y", d => 0)
         .attr("width", x.bandwidth())
-        .attr("height", d => y(d.value));
+        .attr("height", d => y(d.value))
+        .attr("z-index", "1");
 
 
     bars.enter()
@@ -267,13 +280,9 @@ function updateGraph(data, xMaxDate, animationDuration) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    // Ajoutez la légende de l'axe des y
-    svg.append("text")
-        .attr("transform", "rotate(0)")
-        .attr("y", height)
-        .attr("x", margin.left)
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("Blessés/morts russes")
-        .attr("font-size", "large");
+
+
+    const total = filteredData.reduce((acc, d) => acc + d.value, 0);
+    d3.select("#total-counter")
+        .text(`Total: ${total}`);
 }
