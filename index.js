@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { getDataCSV } from './js/data.js';
+import { getDataCSV } from '/js/data.js';
 
 const speed = 4000;
 const speedBlood = 3000;
