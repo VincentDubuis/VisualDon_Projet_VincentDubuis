@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const event = getData();
     //Quand on a les données, on les affiche dans la console et on crée le graphique
     event.then(function(result) {
-        console.log(result);
         events = result;
         createGraph(result);
     });
@@ -50,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const eventDate = new Date(event.date);
             return eventDate <= inputDate;
         });
-
         let lastEventWithInfo = null;
         let lastEventWithPicture = null;
         // Mise à jour des événements
@@ -82,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
     //Bouton Play/Pause
     function togglePlay() {
         if (isPlaying) {
-            console.log("Paused");
             clearInterval(interval);
             playButton.value = "Play";
         } else {
