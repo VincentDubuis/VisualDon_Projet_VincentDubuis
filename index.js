@@ -15,6 +15,7 @@ const gallery = document.querySelectorAll('.gallery');
 const infoText = document.getElementById('info-text');
 const previous = document.getElementById('previousButton');
 const next = document.getElementById('nextButton');
+const sliderDay = document.querySelector('#slider').querySelector('input[type="range"]');
 let events; //La variable events contient les données du fichier csv
 document.addEventListener('DOMContentLoaded', function() {
     //Charge les données et crée le graphique
@@ -28,6 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     event.then(function(result) {
         events = result;
         createGraph(result);
+        sliderDay.max = result.length;
+        console.log(sliderDay.max);
     });
 
     // Fonction pour afficher les sections en fonction de la valeur du rangeInput
